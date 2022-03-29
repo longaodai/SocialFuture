@@ -22,6 +22,8 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
     public function filter($params = null)
     {
         $this->thisModel('where', 'id', '=', 1);
+
+        $this->thisModel('where', 'name', '!=', '');
         
         return parent::filter();
     }
