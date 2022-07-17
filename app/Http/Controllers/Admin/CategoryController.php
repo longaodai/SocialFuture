@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\StoreRequest;
+use App\Http\Requests\Category\UpdateRequest;
 use App\Services\Categories\CategoryServiceInterface;
 use Illuminate\Http\Request;
 
@@ -10,73 +12,107 @@ class CategoryController extends Controller
 {
     public $categoryService;
 
+    /**
+     * @param CategoryServiceInterface $categoryService
+     * 
+     * @author longvc <vochilong.work@gmail.com>
+     */
     public function __construct(CategoryServiceInterface $categoryService)
     {
         $this->categoryService = $categoryService;
     }
+
     /**
-     * Display a listing of the resource.
+     * Show list category
      *
-     * @return \Illuminate\Http\Response
+     * @return void
+     * 
+     * @author longvc <vochilong.work@gmail.com>
      */
     public function index()
     {
-        return $this->categoryService->all();
+        $data = $this->categoryService->getList();
+        
+        // return $this->categoryService->all();
+        return view('admin.pages.category.index', compact('data'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show form for creating a new category.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
+     * 
+     * @author longvc <vochilong.work@gmail.com>
      */
     public function create()
     {
-        //
+        return view('admin.pages.category.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store category
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreRequest $request
+     * 
+     * @return mixed
+     * 
+     * @author longvc <vochilong.work@gmail.com>
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
-    }
+        $data = [
+            'name' => $request->get('name'),
+            'slug' => $request->get('name'),
+            'tag' => $request->get('tag'),
+            'icon' => $request->get('icon'),
+            'description' => $request->get('description'),
+            'active' => !empty($request->get('active')) ? ACTIVE_SHOW : NOT_ACTIVE_SHOW,
+        ];
+        
+        $this->categoryService->store($data);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect()->back()->with('success', __('common.msg_add_success'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 
+     * @return void
+     * 
+     * @author longvc <vochilong.work@gmail.com>
      */
     public function edit($id)
     {
-        //
+        $data = $this->categoryService->show($id);
+
+        return view('admin.pages.category.edit', compact('data'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update category
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateRequest $request
+     * @param [type] $id
+     * 
+     * @return mixed
+     * 
+     * @author longvc <vochilong.work@gmail.com>
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        //
+        $data = [
+            'name' => $request->get('name'),
+            'slug' => $request->get('name'),
+            'tag' => $request->get('tag'),
+            'icon' => $request->get('icon'),
+            'description' => $request->get('description'),
+            'active' => !empty($request->get('active')) ? ACTIVE_SHOW : NOT_ACTIVE_SHOW,
+        ];
+        $category = $this->categoryService->update($data, collect(['id' => $id]));
+
+        return redirect()->back()->with('success', __('common.msg_update_success'));
     }
 
     /**

@@ -16,6 +16,11 @@ class CreateCategoryTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
             $table->string('name');
+            $table->string('slug')->nullable();
+            $table->string('icon')->nullable();
+            $table->string('tag')->nullable();
+            $table->string('description')->nullable();
+            $table->string('active')->default(ACTIVE_SHOW);
             $table->timestamps();
         });
     }

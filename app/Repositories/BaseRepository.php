@@ -55,7 +55,7 @@ abstract class  BaseRepository
      */
     public function store($params = null)
     {
-        return $this->app->store($params);
+        return $this->app->create($params);
     }
 
     /**
@@ -63,8 +63,6 @@ abstract class  BaseRepository
      */
     public function update($params = null, $options = null)
     {
-        $this->mark($options);
-
         return $this->model->update($params);
     }
 

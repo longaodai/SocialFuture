@@ -11,3 +11,11 @@ if (! defined('ROLE_USER_DEFAULT')) {
 if (! defined('ROLE_USER_ADMIN')) {
     define('ROLE_USER_ADMIN', 100);
 }
+
+if (! defined('NOT_ACTIVE_SHOW')) {
+    define('NOT_ACTIVE_SHOW', 0);
+}
+
+if (! defined('ACTIVE_SHOW')) {
+    define('ACTIVE_SHOW', 1);
+}
