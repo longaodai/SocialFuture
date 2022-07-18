@@ -12,18 +12,39 @@ abstract class  BaseRepository
         $this->setModel();
     }
 
+    /**
+     * Set model
+     *
+     * @return mixed
+     * 
+     * @author longvc <vochilong.work@gmail.com>
+     */
     public function setModel()
     {
         return $this->model = $this->app->newQuery();
     }
 
-    public function thisModel($query, $key = null, $condition = null, $value = null)
+    /**
+     * This model
+     *
+     * @return mixed
+     * 
+     * @author longvc <vochilong.work@gmail.com>
+     */
+    public function thisModel($query)
     {
-        return $this->model->{$query}($key, $condition, $value);
+        $array = func_get_args();
+        unset($array[0]);
+
+        return $this->model->{$query}(...$array);
     }
 
     /**
-     * @param null $params
+     * Get all
+     *
+     * @return mixed
+     * 
+     * @author longvc <vochilong.work@gmail.com>
      */
     public function all($params = null)
     {
@@ -33,7 +54,11 @@ abstract class  BaseRepository
     }
 
     /**
-     * @param null $params
+     * Get list
+     *
+     * @return mixed
+     * 
+     * @author longvc <vochilong.work@gmail.com>
      */
     public function getList($params = null)
     {
@@ -42,6 +67,13 @@ abstract class  BaseRepository
         return $this->model->paginate($this->getPagination($params));
     }
 
+    /**
+     * Handle pagination
+     *
+     * @return mixed
+     * 
+     * @author longvc <vochilong.work@gmail.com>
+     */
     private function getPagination($params)
     {   
         if (empty($params)) return PAGINATION_PAGE_DEFAULT;

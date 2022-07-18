@@ -33,7 +33,6 @@ class CategoryController extends Controller
     {
         $data = $this->categoryService->getList();
         
-        // return $this->categoryService->all();
         return view('admin.pages.category.index', compact('data'));
     }
 
